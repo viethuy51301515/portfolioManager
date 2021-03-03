@@ -1,0 +1,55 @@
+@import '../../global.scss';
+.main-page{
+    
+    min-height: 100vh;
+    max-width: 1150px;
+    margin: auto;
+    @include padding-all;
+}
+// .page{
+//    margin-left:$menu-width
+// }
+.layout{
+    padding-left: $menu-width;
+}
+.menu{
+    width: $menu-width;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 105;
+    right: unset;
+    border-right: $border-style;
+    background-color:  $menu-color;
+    color: white;
+    transition: 0.3s all ease-in-out;
+}
+
+// .hambuger__close{
+//     left: 0%;
+// }
+.main{
+    position: relative;
+}
+.main__grid{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    // z-index: 1;
+    background-color: $background-color;
+    span{
+        background-color: #1e1e1e;
+        height: 100%;
+        min-height: 100vh;
+        width: 1px;
+        position: absolute;
+    }
+    @for $i from 1 to 5 {
+        span:nth-child(#{$i}){
+            left: 20%*$i;
+        }
+    }
+}

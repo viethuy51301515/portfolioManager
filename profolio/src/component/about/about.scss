@@ -1,0 +1,61 @@
+@import '../../global.scss';
+.about-content{
+    display: flex;
+    position: relative;
+}
+.about-content__image{
+    width:60vw;
+    margin-right: 40px;
+    img{
+        height: auto;
+        max-width: 100%;
+    }
+}
+.about-content__info{
+    h1{
+        font-size: 3rem;
+        margin-bottom: 20px;
+        span{
+            color: $blue-color;
+        }
+    }
+    p{
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+        line-height: 1.2em;
+    }
+    ul{
+        list-style-type: none;
+        li{
+            font-size: 1.2rem;
+            padding-top: 5px;
+            b{
+                font-weight: 700;
+                min-width: 120px;
+                display: inline-block;
+                margin-right: 7px;
+                position: relative;
+            }
+            b::after{
+                position: absolute;
+                right: 0;
+                content: ":";
+            }
+        }
+    }
+    button{
+        width: 200px;
+        height: 50px;
+        font-size: 25px;
+        margin-top: 10px;
+        background-color: $blue-color;
+        outline: none;
+        color:white;
+        // border: none;
+    }
+}
+@media only screen and (max-width : 1000px){
+    .about-content{
+        flex-direction: column;
+    }
+}

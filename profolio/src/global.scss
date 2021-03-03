@@ -1,0 +1,35 @@
+$border-style:1px solid #2e344e;
+$menu-color:#191d2b;
+$background-color:rgb(16, 18, 27);
+$blue-color:#037fff;
+$border-color:#2e344e;
+$menu-width:260px;
+@mixin padding-all {
+    padding-top: 100px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+}
+
+@mixin animation {
+    animation: animate 0.5s;
+}
+@mixin process-animation($time,$delay){
+    animation: process-animate $time;
+    animation-delay: $delay;
+}
+@keyframes animate{
+    from{
+        transform: scale(0);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+@keyframes process-animate{
+    from{
+        width: 0;
+    }
+}
