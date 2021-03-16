@@ -5,6 +5,8 @@ const api = axios.create({
   },
 });
 
+/// Achivement
+
 export async function getAchivement() {
   try {
     const achivements = await api.get("/api/achivement");
@@ -14,3 +16,21 @@ export async function getAchivement() {
     return console.log(error.response.data);
   }
 }
+
+export async function saveAchivement(achivement) {
+  try {
+    const result  = await api.put(`/api/achivement/${achivement.id}`,achivement)
+  } catch (error) {
+    return console.log(error.response.data);
+  }
+}
+
+export async function deleletAchivement(id){
+  try {
+    const result = await api.delete(`/api/achivement/${id}`);
+  } catch (error) {
+    return console.log(error.response.data);
+  }
+}
+
+//////// 

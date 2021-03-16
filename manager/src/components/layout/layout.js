@@ -18,7 +18,7 @@ import {
 } from "react-router-dom";
 import { useSelector, connect } from "react-redux";
 import EventList from "../event/listevent";
-import Teacher from "../teacher";
+import Achivement from "../achivement";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const authUser = useSelector((state) => state.login);
   // var email = localStorage.getItem("email");
@@ -63,7 +63,7 @@ class LayoutItem extends React.Component {
                     path="/login"
                     render={(props) => <Login {...props} />}
                   />
-                  <ProtectedRoute exact path="/student" component={Student} />
+                  {/* <ProtectedRoute exact path="/student" component={Student} />
                   <ProtectedRoute
                     exact
                     path="/studentList"
@@ -74,11 +74,11 @@ class LayoutItem extends React.Component {
                     exact
                     path="/eventList"
                     component={EventList}
-                  />
+                  /> */}
                   <ProtectedRoute
                     exact
                     path="/achivement"
-                    component={Teacher}
+                    component={Achivement}
                   />
                 </Switch>
               </div>

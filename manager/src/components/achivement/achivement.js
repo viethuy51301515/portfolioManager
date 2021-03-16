@@ -16,7 +16,7 @@ import {
 } from "antd";
 import { teacherRef } from "../../firebase";
 import { teacherStore } from "../../firebase";
-import { getAchivement } from "../../api";
+import { getAchivement, saveAchivement } from "../../api";
 // import { LoadingOutlined, PlusOutlined,UserAddOutlined } from '@ant-design/icons';
 
 function getBase64(img, callback) {
@@ -88,54 +88,71 @@ class Avatar extends React.Component {
     );
   }
 }
-const EdtitableTeacher = (props) => {
+const EditableAchivement = (props) => {
   // const {visible,setVisible} = useState(props.isVisible);
   const [data, setData] = useState({
-    name: "",
-    pos: "",
+    date: "",
     des: "",
+    title: "",
+    link: "",
+    name: "",
+    img: "",
     id: "",
   });
 
-  const handleSubmit = () => {
-    var id = document.getElementById("id").value;
+  const handleSubmit = async () => {
+    var id = document.getElementById("_id").value;
     var timeTime = new Date().getTime();
     if (id != "") {
-      teacherRef.child(data.key).update({
-        name: data.name,
-        pos: data.pos,
+      // teacherRef.child(data.key).update({
+      //   date: data.date,
+      //   des: data.des,
+      //   title: data.title,
+      //   link: data.link,
+      //   name: data.name,
+      //   image: id,
+      //   id: id,
+      // });
+      await saveAchivement({
+        date: data.date,
         des: data.des,
-        image: id,
+        title: data.title,
+        link: data.link,
+        name: data.name,
+        img: id,
         id: id,
-      });
+      })
+
       notification.success({
         message: "Tựa đề thông báo",
         description: "Bạn đã lưu dữ liệu thành công",
       });
-      teacherStore
-        .child(id)
-        .put(data.image)
-        .then(function (snapshot) {
-          console.log("Uploaded a blob or file!");
-        });
+      // teacherStore
+      //   .child(id)
+      //   .put(data.image)
+      //   .then(function (snapshot) {
+      //     console.log("Uploaded a blob or file!");
+      //   });
     } else {
-      teacherRef.push({
-        name: data.name,
-        pos: data.pos,
+      await saveAchivement({
+        date: data.date,
         des: data.des,
-        image: timeTime,
-        id: timeTime,
-      });
+        title: data.title,
+        link: data.link,
+        name: data.name,
+        img: id,
+        id: id,
+      })
       notification.success({
         message: "Tựa đề thông báo",
         description: "Bạn đã lưu dữ liệu thành công",
       });
-      teacherStore
-        .child(timeTime)
-        .put(data.image)
-        .then(function (snapshot) {
-          console.log("Uploaded a blob or file!");
-        });
+      // teacherStore
+      //   .child(timeTime)
+      //   .put(data.image)
+      //   .then(function (snapshot) {
+      //     console.log("Uploaded a blob or file!");
+      //   });
     }
     // notification.success({
     //   message: 'Tựa đề thông báo',
@@ -146,36 +163,43 @@ const EdtitableTeacher = (props) => {
   };
   const changeValue = (id) => {
     var dataTemp = {
-      name: id == "name" ? document.getElementById("name").value : data.name,
-      pos: id == "pos" ? document.getElementById("pos").value : data.pos,
-      des: id == "des" ? document.getElementById("des").value : data.des,
+      date: id === "date" ? document.getElementById("date").value : data.date,
+      des: id === "des" ? document.getElementById("des").value : data.des,
+      title:
+        id === "title" ? document.getElementById("title").value : data.title,
+      link: id === "link" ? document.getElementById("link").value : data.link,
+      name: id === "name" ? document.getElementById("name").value : data.name,
+
       id: data.id,
-      image: data.image,
+      img: data.img,
       key: data.key,
     };
     setData(dataTemp);
   };
   const changeImg = (image) => {
     var dataTemp = {
-      name: data.name,
-      pos: data.pos,
+      date: data.date,
       des: data.des,
+      title: data.title,
+      link: data.link,
+      name: data.name,
+      img: image,
       id: data.id,
-      image: image,
       key: data.key,
     };
     setData(dataTemp);
-    console.log(dataTemp);
   };
   useEffect(() => {
     var dataTemp = {
-      name: props.data.name,
-      pos: props.data.pos,
+      date: props.data.date,
       des: props.data.des,
-      id: props.data.id,
+      title: props.data.title,
+      link: props.data.link,
+      name: props.data.name,
+      img: props.data._id,
+      id: props.data._id,
       key: props.data.key,
     };
-    console.log("uf" + props.data.name);
     setData(dataTemp);
   }, [props.data]);
   return (
@@ -192,32 +216,46 @@ const EdtitableTeacher = (props) => {
       >
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="date"
+          id="date"
+          value={data.date}
+          onChange={() => changeValue("name")}
+        />
+        <Input
+          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          id="des"
+          placeholder="description"
+          value={data.des}
+          onChange={() => changeValue("pos")}
+        />
+        <Input
+          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          id="title"
+          placeholder="title"
+          value={data.title}
+          onChange={() => changeValue("des")}
+        />
+        <Input
+          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="link"
+          id="link"
+          value={data.link}
+          onChange={() => changeValue("name")}
+        />
+        <Input
+          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
           placeholder="Name"
           id="name"
           value={data.name}
           onChange={() => changeValue("name")}
         />
-        <Input
-          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-          id="pos"
-          placeholder="Position"
-          value={data.pos}
-          onChange={() => changeValue("pos")}
-        />
-        <Input
-          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-          id="des"
-          placeholder="Description"
-          value={data.des}
-          onChange={() => changeValue("des")}
-        />
         <Avatar changeImg={changeImg} />
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-          id="id"
+          id="_id"
           placeholder="id"
           value={data.id}
-          onChange={() => changeValue("id")}
+          onChange={() => changeValue("_id")}
         />
         <Button
           type="primary"
@@ -231,7 +269,7 @@ const EdtitableTeacher = (props) => {
     </div>
   );
 };
-function Teacher(props) {
+function Achivement(props) {
   const data = useSelector((state) => state.dataRe);
   const [selectedData, setSelectedData] = useState({});
   const [isShowModal, setShowModal] = useState(false);
@@ -258,11 +296,12 @@ function Teacher(props) {
       });
     }
     var listTemp = [...listI];
-    listTemp.map((item) => {
+    listTemp.map((item,index) => {
       var subItem = list.filter((sub) => sub.id == item.id);
       if (subItem.length > 0) {
         item.image = subItem[0].image;
       }
+      item.key = index;
       return item;
     });
     setListTeacher(listTemp);
@@ -270,8 +309,16 @@ function Teacher(props) {
   useEffect(async () => {
     var list = [];
     const data = await getAchivement();
+    console.log(data);
     list = data;
-    getListImg(list);
+    if(!list){
+    list = [...list].map( (item,index) => {
+      item.key = index;
+      return item;
+    })
+  }
+    setListTeacher(list);
+    // getListImg(list);
   }, []);
   const changeReload = () => {
     setReload(!isReload);
@@ -280,11 +327,6 @@ function Teacher(props) {
     // setReload(!isReload);
 
     teacherRef.child(key).remove();
-    // teacherStore.child(id).delete().then(function() {
-    //   // File deleted successfully
-    // }).catch(function(error) {
-    //   // Uh-oh, an error occurred!
-    // });
     notification.success({
       message: "Tựa đề thông báo",
       description: "Bạn đã xóa sự kiện thành công",
@@ -292,6 +334,7 @@ function Teacher(props) {
     window.location = "/teacher";
   };
   const columns = [
+    { title: "Id", dataIndex: "_id", key: "_id", editable: false ,visible:false},
     { title: "Date", dataIndex: "date", key: "date", editable: true },
     {
       title: "DESCRIPTION",
@@ -309,14 +352,11 @@ function Teacher(props) {
     { title: "Name", dataIndex: "name", key: "name" },
     {
       title: "Image",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "img",
+      key: "img",
       render: (text, record) => (
         <div>
-          <img
-            style={{ height: "40px", width: "auto" }}
-            src={record.image}
-          />
+          <img style={{ height: "40px", width: "auto" }} src={record.img} />
         </div>
       ),
     },
@@ -329,6 +369,7 @@ function Teacher(props) {
           title="Bạn có muốn xóa sự kiện này không"
           placement="topRight"
           onConfirm={() => {
+            console.log(record);
             setSelectedData(record);
             setShowModal(true);
           }}
@@ -371,7 +412,7 @@ function Teacher(props) {
         Add
       </Button>
       <Table columns={columns} dataSource={listTeacher} />
-      <EdtitableTeacher
+      <EditableAchivement
         reload={changeReload}
         data={selectedData}
         isVisible={isShowModal}
@@ -380,4 +421,4 @@ function Teacher(props) {
     </div>
   );
 }
-export default Teacher;
+export default Achivement;

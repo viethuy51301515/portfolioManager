@@ -45,6 +45,7 @@ router.post(
 router.put('/:id', async (req,res) => {
   try {
     const achivement = await Achivement.findById(req.params.id);
+    console.log(achivement);
     if(achivement){
       achivement.date = req.body.date;
       achivement.des = req.body.des;
@@ -57,9 +58,9 @@ router.put('/:id', async (req,res) => {
 
     }
 
-    res.json(portfolio);
+    res.json(achivement);
   } catch (error) {
-    return error.status(500), send("server error");
+    return res.status(500).send("Server error");
   } 
 });
 
