@@ -16,7 +16,12 @@ import {
 } from "antd";
 import { teacherRef } from "../../firebase";
 import { teacherStore } from "../../firebase";
-import { getAchivement, saveAchivement } from "../../api";
+import {
+  addAchivement,
+  deleletAchivement,
+  getAchivement,
+  saveAchivement,
+} from "../../api";
 // import { LoadingOutlined, PlusOutlined,UserAddOutlined } from '@ant-design/icons';
 
 function getBase64(img, callback) {
@@ -121,7 +126,7 @@ const EditableAchivement = (props) => {
         name: data.name,
         img: id,
         id: id,
-      })
+      });
 
       notification.success({
         message: "Tựa đề thông báo",
@@ -134,7 +139,7 @@ const EditableAchivement = (props) => {
       //     console.log("Uploaded a blob or file!");
       //   });
     } else {
-      await saveAchivement({
+      await addAchivement({
         date: data.date,
         des: data.des,
         title: data.title,
@@ -142,7 +147,7 @@ const EditableAchivement = (props) => {
         name: data.name,
         img: id,
         id: id,
-      })
+      });
       notification.success({
         message: "Tựa đề thông báo",
         description: "Bạn đã lưu dữ liệu thành công",
@@ -207,11 +212,11 @@ const EditableAchivement = (props) => {
       <Modal
         visible={props.isVisible}
         footer=""
-        title="Thông tin giáo viên"
+        title="Achivement"
         onOk={() => props.setModalVisible(false)}
         onCancel={() => {
           props.setModalVisible(false);
-          window.location = "/teacher";
+          // window.location = "/teacher";
         }}
       >
         <Input
@@ -219,28 +224,29 @@ const EditableAchivement = (props) => {
           placeholder="date"
           id="date"
           value={data.date}
-          onChange={() => changeValue("name")}
+          onChange={() => changeValue("date")}
+          type="date"
         />
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
           id="des"
           placeholder="description"
           value={data.des}
-          onChange={() => changeValue("pos")}
+          onChange={() => changeValue("des")}
         />
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
           id="title"
           placeholder="title"
           value={data.title}
-          onChange={() => changeValue("des")}
+          onChange={() => changeValue("title")}
         />
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
           placeholder="link"
           id="link"
           value={data.link}
-          onChange={() => changeValue("name")}
+          onChange={() => changeValue("link")}
         />
         <Input
           prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -296,7 +302,7 @@ function Achivement(props) {
       });
     }
     var listTemp = [...listI];
-    listTemp.map((item,index) => {
+    listTemp.map((item, index) => {
       var subItem = list.filter((sub) => sub.id == item.id);
       if (subItem.length > 0) {
         item.image = subItem[0].image;
@@ -311,30 +317,37 @@ function Achivement(props) {
     const data = await getAchivement();
     console.log(data);
     list = data;
-    if(!list){
-    list = [...list].map( (item,index) => {
-      item.key = index;
-      return item;
-    })
-  }
+    if (!list) {
+      list = [...list].map((item, index) => {
+        item.key = index;
+        return item;
+      });
+    }
     setListTeacher(list);
     // getListImg(list);
   }, []);
   const changeReload = () => {
     setReload(!isReload);
   };
-  const handleDelete = (key, id) => {
+  const handleDelete = async (key, id) => {
     // setReload(!isReload);
-
-    teacherRef.child(key).remove();
+    console.log(id);
+    await deleletAchivement(id);
+    // teacherRef.child(key).remove();
     notification.success({
       message: "Tựa đề thông báo",
       description: "Bạn đã xóa sự kiện thành công",
     });
-    window.location = "/teacher";
+    // window.location = "/teacher";
   };
   const columns = [
-    { title: "Id", dataIndex: "_id", key: "_id", editable: false ,visible:false},
+    {
+      title: "Id",
+      dataIndex: "_id",
+      key: "_id",
+      editable: false,
+      visible: false,
+    },
     { title: "Date", dataIndex: "date", key: "date", editable: true },
     {
       title: "DESCRIPTION",
@@ -388,7 +401,7 @@ function Achivement(props) {
         <Popconfirm
           title="Bạn có muốn xóa sự kiện này không"
           placement="topRight"
-          onConfirm={() => handleDelete(record.key, record.id)}
+          onConfirm={() => handleDelete(record.key, record._id)}
           okText="Yes"
           cancelText="No"
         >

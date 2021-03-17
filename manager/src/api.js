@@ -19,13 +19,24 @@ export async function getAchivement() {
 
 export async function saveAchivement(achivement) {
   try {
-    const result  = await api.put(`/api/achivement/${achivement.id}`,achivement)
+    const result = await api.put(
+      `/api/achivement/${achivement.id}`,
+      achivement
+    );
   } catch (error) {
     return console.log(error.response.data);
   }
 }
 
-export async function deleletAchivement(id){
+export async function addAchivement(achivement) {
+  try {
+    const result = await api.post("/api/achivement", achivement);
+  } catch (error) {
+    return console.log(error.response.data);
+  }
+}
+
+export async function deleletAchivement(id) {
   try {
     const result = await api.delete(`/api/achivement/${id}`);
   } catch (error) {
@@ -33,4 +44,4 @@ export async function deleletAchivement(id){
   }
 }
 
-//////// 
+////////

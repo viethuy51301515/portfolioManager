@@ -16,13 +16,12 @@ router.post(
   [
     body("date", "not empty").not().isEmpty(),
     body("des", "not empty").not().isEmpty(),
-    body("img", "not empty").not().isEmpty(),
-    body("link", "not empty").not().isEmpty(),
     body("name", "not empty").not().isEmpty(),
     body("title", "not empty").not().isEmpty(),
   ],
   (req, res) => {
     try {
+      console.log("123");
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(401).json({ errors: errors.array() });
@@ -42,11 +41,11 @@ router.post(
     }
   }
 );
-router.put('/:id', async (req,res) => {
+router.put("/:id", async (req, res) => {
   try {
     const achivement = await Achivement.findById(req.params.id);
     console.log(achivement);
-    if(achivement){
+    if (achivement) {
       achivement.date = req.body.date;
       achivement.des = req.body.des;
       achivement.img = req.body.img;
@@ -54,28 +53,26 @@ router.put('/:id', async (req,res) => {
       achivement.name = req.body.name;
       achivement.title = req.body.title;
       await achivement.save();
-
-
     }
 
     res.json(achivement);
   } catch (error) {
     return res.status(500).send("Server error");
-  } 
+  }
 });
 
-router.delete('/:id', async (req,res) => {
+router.delete("/:id", async (req, res) => {
   try {
+    console.log("delete");
+    console.log(req.params.id);
     const achivement = await Achivement.findById(req.params.id);
-
-  if(achivement){
-    await achivement.remove();
-    res.json({msg:"removed"});
-  }
+    console.log(achivement);
+    if (achivement) {
+      await achivement.remove();
+      res.json({ msg: "removed" });
+    }
   } catch (error) {
     res.status(501).send("server error");
   }
-  
-
-})
+});
 module.exports = router;

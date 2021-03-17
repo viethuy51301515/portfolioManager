@@ -57,7 +57,7 @@ class MenuLeft extends React.Component {
             ></Icon>
             <span style={{ fontSize: "1.4rem" }}>TTAN</span>
           </Menu.Item>
-          <SubMenu
+          {/* <SubMenu
             key="sub1"
             title={
               <span>
@@ -90,7 +90,7 @@ class MenuLeft extends React.Component {
               <Icon type="mail"></Icon>
               <span>Content List</span>
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key="achivement">
             <Link to="/achivement">
               <Icon type="mail"></Icon>
