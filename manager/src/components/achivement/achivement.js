@@ -108,6 +108,7 @@ const EditableAchivement = (props) => {
   const handleSubmit = async () => {
     var id = document.getElementById("_id").value;
     var timeTime = new Date().getTime();
+    console.log("data : "+data);
     if (id != "") {
       // teacherRef.child(data.key).update({
       //   date: data.date,
@@ -132,12 +133,12 @@ const EditableAchivement = (props) => {
         message: "Tựa đề thông báo",
         description: "Bạn đã lưu dữ liệu thành công",
       });
-      // teacherStore
-      //   .child(id)
-      //   .put(data.image)
-      //   .then(function (snapshot) {
-      //     console.log("Uploaded a blob or file!");
-      //   });
+      teacherStore
+        .child(id)
+        .put(data.img)
+        .then(function (snapshot) {
+          console.log("Uploaded a blob or file!");
+        });
     } else {
       await addAchivement({
         date: data.date,
@@ -152,12 +153,12 @@ const EditableAchivement = (props) => {
         message: "Tựa đề thông báo",
         description: "Bạn đã lưu dữ liệu thành công",
       });
-      // teacherStore
-      //   .child(timeTime)
-      //   .put(data.image)
-      //   .then(function (snapshot) {
-      //     console.log("Uploaded a blob or file!");
-      //   });
+      teacherStore
+        .child(timeTime)
+        .put(data.img)
+        .then(function (snapshot) {
+          console.log("Uploaded a blob or file!");
+        });
     }
     // notification.success({
     //   message: 'Tựa đề thông báo',
@@ -305,13 +306,14 @@ function Achivement(props) {
     listTemp.map((item, index) => {
       var subItem = list.filter((sub) => sub.id == item.id);
       if (subItem.length > 0) {
-        item.image = subItem[0].image;
+        item.img = subItem[0].image;
       }
       item.key = index;
       return item;
     });
     setListTeacher(listTemp);
   };
+  
   useEffect(async () => {
     var list = [];
     const data = await getAchivement();
@@ -324,7 +326,7 @@ function Achivement(props) {
       });
     }
     setListTeacher(list);
-    // getListImg(list);
+    getListImg(list);
   }, []);
   const changeReload = () => {
     setReload(!isReload);
@@ -424,7 +426,7 @@ function Achivement(props) {
       >
         Add
       </Button>
-      <Table columns={columns} dataSource={listTeacher} />
+      <Table  columns={columns} dataSource={listTeacher} />
       <EditableAchivement
         reload={changeReload}
         data={selectedData}

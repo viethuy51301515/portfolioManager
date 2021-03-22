@@ -35,7 +35,7 @@ class MenuLeft extends React.Component {
     ];
     return (
       <div
-        style={{ width: this.state.menuWidth, height: "100vh" }}
+        style={{ width: this.state.menuWidth, height: "100vh" ,position:"sticky",top:"0",left:"0",zIndex:"2"}}
         id="menu-layout"
       >
         <Menu
